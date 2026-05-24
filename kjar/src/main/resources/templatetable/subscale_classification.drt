@@ -1,0 +1,37 @@
+template header
+subscale
+low_max
+high_min
+
+package com.ftn.sbnz.rules;
+
+import com.ftn.sbnz.model.SubscaleAverage;
+import com.ftn.sbnz.model.CategorizedSubscale;
+
+template "subscale_classification"
+
+rule "Classify @{subscale} as Low"
+    salience -20
+when
+    $s: SubscaleAverage(subscale == "@{subscale}", average <= @{low_max})
+then
+    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "low"));
+end
+
+rule "Classify @{subscale} as Moderate"
+    salience -20
+when
+    $s: SubscaleAverage(subscale == "@{subscale}", average > @{low_max}, average < @{high_min})
+then
+    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "moderate"));
+end
+
+rule "Classify @{subscale} as High"
+    salience -20
+when
+    $s: SubscaleAverage(subscale == "@{subscale}", average >= @{high_min})
+then
+    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "high"));
+end
+
+end template
