@@ -1,0 +1,17 @@
+package com.ftn.sbnz.rules;
+
+import com.ftn.sbnz.model.ScoredItem;
+import com.ftn.sbnz.model.SubscaleAverage;
+
+rule "Calculate subscale average per family"
+    salience -10
+when
+    $si: ScoredItem($familyId: familyId, $subscale: subscale)
+    not SubscaleAverage(familyId == $familyId, subscale == $subscale)
+    accumulate(
+        ScoredItem(familyId == $familyId, subscale == $subscale, $value: value);
+        $avg: average($value)
+    )
+then
+    insert(new SubscaleAverage($familyId, $subscale, $avg.doubleValue()));
+end

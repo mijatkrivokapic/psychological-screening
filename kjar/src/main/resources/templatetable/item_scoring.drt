@@ -14,6 +14,7 @@ when
     $a: Answer(itemNumber == @{itemNumber})
 then
     insert(new ScoredItem($a.getFamilyId(), @{itemNumber}, "@{subscale}", $a.getValue()));
+    insert(new ScoredItem($a.getFamilyId(), @{itemNumber}, "global", $a.getValue()));
 end
 
 end template
