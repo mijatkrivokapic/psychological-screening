@@ -34,7 +34,7 @@ public class MinimalTestService {
             }
             String scoringDrl = converter.compile(scoringData, scoringTpl, 2, 1);
 
-// --- 2. Klasifikacija (novo) ---
+
             InputStream classifTpl  = getClass().getResourceAsStream("/templatetable/subscale_classification.drt");
             InputStream classifData = getClass().getResourceAsStream("/templatetable/subscale_classification.xlsx");
             if (classifTpl == null || classifData == null) {
@@ -62,26 +62,20 @@ public class MinimalTestService {
             // ===== UBACIVANJE ČINJENICA =====
             String familyId = "family_123";
 
-            // Po jedan odgovor po item-u (vrednosti su izmišljene, prilagodi po potrebi)
             for (int i : new int[]{1, 7, 10, 11, 12, 18}) {
                 ksession.insert(new Answer(familyId, i, 5));
             }
 
-            // disability_support → svih 4 = 1 → prosek 1.0 → LOW
             for (int i : new int[]{22, 23, 24, 25}) {
                 ksession.insert(new Answer(familyId, i, 1));
             }
 
-            // ostatak (parenting, emotional_wellbeing, physical_material_wellbeing) → 3 → MODERATE
             for (int i : new int[]{2, 5, 8, 14, 17, 19, 3, 4, 9, 13, 6, 15, 16, 20, 21}) {
                 ksession.insert(new Answer(familyId, i, 3));
             }
 
-            // ===== OKIDANJE PRAVILA =====
             int firedRules = ksession.fireAllRules();
             System.out.println("Broj okinutih pravila: " + firedRules);
-
-            // ===== ČITANJE REZULTATA IZ RADNE MEMORIJE =====
 
             Collection<?> scored = ksession.getObjects(o -> o instanceof ScoredItem);
             System.out.println("--- ScoredItem (" + scored.size() + ") ---");
