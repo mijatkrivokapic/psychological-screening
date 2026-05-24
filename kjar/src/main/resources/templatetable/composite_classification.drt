@@ -1,0 +1,25 @@
+template header
+composite
+subscale1
+category1
+subscale2
+category2
+finalCategory
+
+package com.ftn.sbnz.rules;
+
+import com.ftn.sbnz.model.CategorizedSubscale;
+import com.ftn.sbnz.model.CategorizedComposite;
+
+template "composite_classification"
+
+rule "Classify @{composite} when @{subscale1}=@{category1} and @{subscale2}=@{category2}"
+    salience -30
+when
+    $s1: CategorizedSubscale(subscale == "@{subscale1}", category == "@{category1}", $fid: familyId)
+    $s2: CategorizedSubscale(subscale == "@{subscale2}", category == "@{category2}", familyId == $fid)
+then
+    insert(new CategorizedComposite($fid, "@{composite}", "@{finalCategory}"));
+end
+
+end template
