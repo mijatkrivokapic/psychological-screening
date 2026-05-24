@@ -1,0 +1,19 @@
+template header
+itemNumber
+subscale
+
+package com.ftn.sbnz.rules;
+
+import com.ftn.sbnz.model.Answer;
+import com.ftn.sbnz.model.ScoredItem;
+
+template "Score item"
+
+rule "Score item @{itemNumber}"
+when
+    $a: Answer(itemNumber == @{itemNumber})
+then
+    insert(new ScoredItem($a.getFamilyId(), @{itemNumber}, "@{subscale}", $a.getValue()));
+end
+
+end template
