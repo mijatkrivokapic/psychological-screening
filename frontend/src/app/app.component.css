@@ -1,0 +1,4 @@
+/* Define the --inter-font variable used in templates */
+:host {
+  --inter-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
