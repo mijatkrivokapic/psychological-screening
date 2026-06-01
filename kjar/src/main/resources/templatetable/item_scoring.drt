@@ -15,6 +15,9 @@ when
 then
     insert(new ScoredItem($a.getFamilyId(), @{itemNumber}, "@{subscale}", $a.getValue()));
     insert(new ScoredItem($a.getFamilyId(), @{itemNumber}, "global", $a.getValue()));
+    ScoredItem scored = new ScoredItem($a.getFamilyId(), @{itemNumber}, "@{subscale}", $a.getValue());
+    insert(scored);
+    insert(new DependsOn(scored, $a));
 end
 
 end template

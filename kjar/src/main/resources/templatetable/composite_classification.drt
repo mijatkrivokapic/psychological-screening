@@ -10,6 +10,7 @@ package com.ftn.sbnz.rules;
 
 import com.ftn.sbnz.model.CategorizedSubscale;
 import com.ftn.sbnz.model.CategorizedComposite;
+import com.ftn.sbnz.model.DependsOn;
 
 template "composite_classification"
 
@@ -19,7 +20,10 @@ when
     $s1: CategorizedSubscale(subscale == "@{subscale1}", category == "@{category1}", $fid: familyId)
     $s2: CategorizedSubscale(subscale == "@{subscale2}", category == "@{category2}", familyId == $fid)
 then
-    insert(new CategorizedComposite($fid, "@{composite}", "@{finalCategory}"));
+    CategorizedComposite comp = new CategorizedComposite($fid, "@{composite}", "@{finalCategory}");
+    insert(comp);
+    insert(new DependsOn(comp, $s1));
+    insert(new DependsOn(comp, $s2));
 end
 
 end template

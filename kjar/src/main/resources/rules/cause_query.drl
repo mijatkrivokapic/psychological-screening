@@ -1,0 +1,17 @@
+package com.ftn.sbnz.rules;
+
+import com.ftn.sbnz.model.DependsOn;
+
+query getDirectCauses(Object effectArg, Object causeArg)
+    DependsOn(consequence == effectArg, cause == causeArg)
+end
+
+query getAllCauses(Object effectArg, Object causeArg)
+    DependsOn(consequence == effectArg, cause == causeArg)
+    or
+    (
+        DependsOn(consequence == effectArg, $intermediate : cause)
+        and
+        getAllCauses($intermediate, causeArg; )
+    )
+end

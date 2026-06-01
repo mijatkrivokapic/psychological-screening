@@ -2,6 +2,9 @@ package com.ftn.sbnz.rules;
 
 import com.ftn.sbnz.model.ScoredItem;
 import com.ftn.sbnz.model.SubscaleAverage;
+import com.ftn.sbnz.model.DependsOn;
+import java.util.List;
+
 
 rule "Calculate subscale average per family"
     salience -10
@@ -12,6 +15,13 @@ when
         ScoredItem(familyId == $familyId, subscale == $subscale, $value: value);
         $avg: average($value)
     )
+    $items: List(size > 0) from collect(
+            ScoredItem(familyId == $familyId, subscale == $subscale)
+    )
 then
-    insert(new SubscaleAverage($familyId, $subscale, $avg.doubleValue()));
+    SubscaleAverage avg = new SubscaleAverage($familyId, $subscale, $avg.doubleValue());
+    insert(avg);
+    for (Object item : $items) {
+        insert(new DependsOn(avg, item));
+    }
 end

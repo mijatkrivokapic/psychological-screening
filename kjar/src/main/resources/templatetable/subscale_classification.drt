@@ -15,7 +15,9 @@ rule "Classify @{subscale} as Low"
 when
     $s: SubscaleAverage(subscale == "@{subscale}", average <= @{low_max})
 then
-    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "low"));
+    CategorizedSubscale cat = new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "low");
+    insert(cat);
+    insert(new DependsOn(cat, $s));
 end
 
 rule "Classify @{subscale} as Moderate"
@@ -23,7 +25,9 @@ rule "Classify @{subscale} as Moderate"
 when
     $s: SubscaleAverage(subscale == "@{subscale}", average > @{low_max}, average < @{high_min})
 then
-    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "moderate"));
+    CategorizedSubscale cat = new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "moderate");
+    insert(cat);
+    insert(new DependsOn(cat, $s));
 end
 
 rule "Classify @{subscale} as High"
@@ -31,7 +35,9 @@ rule "Classify @{subscale} as High"
 when
     $s: SubscaleAverage(subscale == "@{subscale}", average >= @{high_min})
 then
-    insert(new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "high"));
+    CategorizedSubscale cat = new CategorizedSubscale($s.getFamilyId(), "@{subscale}", "high");
+    insert(cat);
+    insert(new DependsOn(cat, $s));
 end
 
 end template

@@ -8,6 +8,9 @@ import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.QueryResults;
+import org.kie.api.runtime.rule.QueryResultsRow;
+import org.kie.api.runtime.rule.Variable;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +96,12 @@ public class MinimalTestService {
             System.out.println("--- CategorizedComposite (" + composites.size() + ") ---");
             composites.forEach(System.out::println);
 
+            System.out.println("\n--- STABLO DOKAZA ZA SVAKI KOMPOZIT ---");
+            for (Object comp : composites) {
+                System.out.println("\n# " + comp);
+                printDependencyTree(ksession, comp, 0);
+            }
+
             ksession.dispose();
 
         } catch (Exception e) {
@@ -115,6 +124,11 @@ public class MinimalTestService {
                 ResourceType.DRL
         );
 
+        kieHelper.addResource(
+                kieServices.getResources().newClassPathResource("rules/cause_query.drl"),
+                ResourceType.DRL
+        );
+
         Results results = kieHelper.verify();
         if (results.hasMessages(Message.Level.WARNING, Message.Level.ERROR)) {
             for (Message m : results.getMessages(Message.Level.WARNING, Message.Level.ERROR)) {
@@ -124,5 +138,16 @@ public class MinimalTestService {
         }
 
         return kieHelper.build().newKieSession();
+    }
+
+    private void printDependencyTree(KieSession ksession, Object root, int depth) {
+        String indent = "  ".repeat(depth);
+        System.out.println(indent + "└── " + root);
+
+        QueryResults causes = ksession.getQueryResults("getDirectCauses", root, Variable.v);
+        for (QueryResultsRow row : causes) {
+            Object cause = row.get("causeArg");
+            printDependencyTree(ksession, cause, depth + 1);
+        }
     }
 }
