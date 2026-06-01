@@ -1,0 +1,65 @@
+<div class="container">
+  <h2>Upravljanje konfiguracijom templejta</h2>
+
+  <div *ngFor="let tmpl of templates" class="template-section">
+    <h3>{{ tmpl.kind | titlecase | uppercase }} <small>({{ tmpl.type }})</small></h3>
+
+    <div class="cards-grid">
+      <div
+        class="card"
+        *ngFor="let version of tmpl.versions"
+        [class.active-card]="version === tmpl.active"
+      >
+        <div class="card-header">
+          <h4>{{ version }}</h4>
+          <span class="badge" *ngIf="version === tmpl.active">Aktivno</span>
+        </div>
+
+        <div class="card-actions">
+          <button
+            class="btn btn-secondary"
+            (click)="onDownload(tmpl.kind, tmpl.type, version)"
+            title="Preuzmi ovaj fajl"
+          >
+            Preuzmi
+          </button>
+
+          <button
+            class="btn btn-primary"
+            *ngIf="version !== tmpl.active"
+            (click)="onActivate(tmpl.kind, tmpl.type, version)"
+          >
+            Aktiviraj
+          </button>
+
+          <button
+            class="btn btn-danger"
+            [disabled]="version === tmpl.active"
+            (click)="onDelete(tmpl.kind, tmpl.type, version)"
+            title="Aktivna verzija se ne može obrisati"
+          >
+            Obriši
+          </button>
+        </div>
+      </div>
+
+      <div class="card add-card">
+        <div class="add-content">
+          <h4>+ Dodaj novu verziju</h4>
+          <p>Podržani format: .{{ tmpl.type }}</p>
+          <input
+            type="file"
+            #fileInput
+            style="display: none"
+            accept=".xlsx"
+            (change)="onUpload(tmpl.kind, tmpl.type, $event)"
+          >
+          <button class="btn btn-outline" (click)="fileInput.click()">
+            Izaberi fajl i uploaduj
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

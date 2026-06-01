@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">🧠</span>
+      <span class="title">psychologicalScreening</span>
+    </div>
+
+    <button class="hamburger" (click)="toggle()" aria-label="Toggle navigation">
+      <span [class.open]="isOpen"></span>
+      <span [class.open]="isOpen"></span>
+      <span [class.open]="isOpen"></span>
+    </button>
+
+    <ul class="nav-links" [class.open]="isOpen">
+      <li><a routerLink="/" (click)="isOpen = false">Home</a></li>
+      <li><a routerLink="/about" (click)="isOpen = false">About</a></li>
+      <li><a routerLink="/screening" (click)="isOpen = false">Start Screening</a></li>
+      <li><a routerLink="/templates" (click)="isOpen = false">Templates</a></li>
+      <li><a routerLink="/contact" (click)="isOpen = false">Contact</a></li>
+    </ul>
+  </div>
+</nav>

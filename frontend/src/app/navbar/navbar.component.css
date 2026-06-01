@@ -1,0 +1,127 @@
+:root{
+  --bg: #0f1724;
+  --surface: #0b1220;
+  --accent: #6c5ce7;
+  --muted: #94a3b8;
+}
+
+.navbar{
+  width: 100%;
+  background: linear-gradient(90deg, rgba(108,92,231,0.12), rgba(99,102,241,0.04));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(108,92,231,0.08);
+}
+
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #ff7ab6);
+  color: white;
+  font-size: 18px;
+}
+
+.title{
+  font-weight: 600;
+  color: #0b1220;
+  letter-spacing: 0.2px;
+}
+
+.nav-links{
+  margin-left: auto;
+  list-style: none;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.nav-links li a{
+  text-decoration: none;
+  color: #0b1220;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-links li a:hover{
+  background: rgba(12,18,36,0.06);
+}
+
+.hamburger{
+  display: none;
+  margin-left: auto;
+  width: 40px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  padding: 0.2rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.hamburger span{
+  display: block;
+  height: 2px;
+  width: 18px;
+  background: #0b1220;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.hamburger span.open:nth-child(1){
+  transform: translateY(6px) rotate(45deg);
+}
+.hamburger span.open:nth-child(2){
+  opacity: 0;
+}
+.hamburger span.open:nth-child(3){
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+@media (max-width: 800px){
+  .nav-links{
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 1rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: none;
+  }
+
+  .nav-links.open{
+    display: flex;
+  }
+
+  .hamburger{
+    display: flex;
+  }
+
+  .container{
+    position: relative;
+  }
+}
